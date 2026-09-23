@@ -18,6 +18,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <tika.version>2.9.2</tika.version>
     </properties>
 
     <dependencies>
@@ -37,6 +38,16 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers-standard-package</artifactId>
+            <version>${tika.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
