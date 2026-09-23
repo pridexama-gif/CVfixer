@@ -65,18 +65,34 @@ Extract a structured CV profile:
 curl http://localhost:8080/api/cvs/1/profile
 ```
 
-Example profile response:
+Create a job description:
+
+```bash
+curl -X POST http://localhost:8080/api/jobs \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Java Backend Developer","description":"We need a Java engineer with Spring Boot, REST APIs, SQL, Docker and Git experience.","requiredSkills":"java, spring boot, rest, sql, docker, git","minExperienceYears":3}'
+```
+
+Match a candidate CV against a job description:
+
+```bash
+curl http://localhost:8080/api/jobs/1/match/1
+```
+
+Example match response:
 
 ```json
 {
   "cvId": 1,
-  "fullName": "John Smith",
-  "email": "john.smith@example.com",
-  "phone": "+1 555 123 4567",
-  "skills": ["java", "spring boot", "rest", "sql", "docker"],
-  "experienceYears": 6,
-  "education": "bachelor",
-  "summary": "John Smith has 6 years of experience and skills in java, spring boot, rest, sql, docker. Education: bachelor."
+  "jobId": 1,
+  "jobTitle": "Java Backend Developer",
+  "score": 85,
+  "recommendation": "Strong match",
+  "candidateName": "John Smith",
+  "matchedSkills": ["java", "spring boot", "rest", "sql", "docker"],
+  "missingSkills": ["kubernetes"],
+  "candidateExperienceYears": 6,
+  "candidateEmail": "john.smith@example.com"
 }
 ```
 
@@ -88,6 +104,8 @@ Other endpoints:
 - `GET /api/cvs/{id}` — get one CV document
 - `GET /api/cvs/{id}/analysis` — score skills found in the CV
 - `GET /api/cvs/{id}/profile` — extract a structured candidate profile from the CV
+- `POST /api/jobs` — add a job description
+- `GET /api/jobs/{jobId}/match/{cvId}` — compare a CV to a job description and return a match score
 - `DELETE /api/cvs/{id}` — delete one CV document
 
-This version adds a structured candidate profile extraction layer so the backend can identify candidates, emails, phone numbers, skill sets, education, and years of experience more realistically. The next major step is to move into job-description matching and recruiter-facing ranking.
+This version adds recruiter-facing job-to-candidate matching so the backend can compare a CV against a position and give a match score with matched and missing skills. The next major advancement is a more intelligent ranking model and a production-grade database setup.
