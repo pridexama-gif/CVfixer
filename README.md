@@ -33,10 +33,29 @@ curl -X POST http://localhost:8080/api/cvs \
   -d '{"fileName":"resume.txt","content":"Java developer with Spring Boot experience"}'
 ```
 
+List all CV records:
+
+```bash
+curl http://localhost:8080/api/cvs
+```
+
+Get one CV record:
+
+```bash
+curl http://localhost:8080/api/cvs/1
+```
+
+Analyze a CV for skill match:
+
+```bash
+curl http://localhost:8080/api/cvs/1/analysis
+```
+
 Other endpoints:
 
 - `GET /api/cvs` — list CV documents
 - `GET /api/cvs/{id}` — get one CV document
+- `GET /api/cvs/{id}/analysis` — score skills found in the CV
 - `DELETE /api/cvs/{id}` — delete one CV document
 
-This is the initial backend foundation. File upload, authentication, production database configuration, and the actual CV analysis engine still need to be added as separate features.
+This backend is now a starter foundation for a CV analysis workflow. The next major upgrades will include real PDF/DOCX parsing, improved skill extraction, candidate scoring, and a production database.
