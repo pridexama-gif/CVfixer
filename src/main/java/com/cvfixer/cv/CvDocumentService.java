@@ -21,6 +21,16 @@ public class CvDocumentService {
         return repository.save(new CvDocument(request.fileName(), request.content()));
     }
 
+    public CvDocument create(String fileName, String content) {
+        if (fileName == null || fileName.isBlank()) {
+            fileName = "cv.txt";
+        }
+        if (content == null || content.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CV content cannot be blank");
+        }
+        return repository.save(new CvDocument(fileName, content));
+    }
+
     @Transactional(readOnly = true)
     public List<CvDocument> findAll() {
         return repository.findAll();

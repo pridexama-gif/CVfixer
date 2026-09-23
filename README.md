@@ -25,12 +25,19 @@ The application starts on `http://localhost:8080`.
 
 ## Current API
 
-Create a CV document:
+Create a CV document from JSON:
 
 ```bash
 curl -X POST http://localhost:8080/api/cvs \
   -H 'Content-Type: application/json' \
   -d '{"fileName":"resume.txt","content":"Java developer with Spring Boot experience"}'
+```
+
+Upload a CV file:
+
+```bash
+curl -X POST http://localhost:8080/api/cvs/upload \
+  -F "file=@/path/to/resume.txt"
 ```
 
 List all CV records:
@@ -53,9 +60,11 @@ curl http://localhost:8080/api/cvs/1/analysis
 
 Other endpoints:
 
+- `POST /api/cvs` — create CV from JSON body
+- `POST /api/cvs/upload` — upload a CV text file and store it
 - `GET /api/cvs` — list CV documents
 - `GET /api/cvs/{id}` — get one CV document
 - `GET /api/cvs/{id}/analysis` — score skills found in the CV
 - `DELETE /api/cvs/{id}` — delete one CV document
 
-This backend is now a starter foundation for a CV analysis workflow. The next major upgrades will include real PDF/DOCX parsing, improved skill extraction, candidate scoring, and a production database.
+This backend now includes a practical file upload flow for CV text documents. The next major upgrades will focus on richer CV parsing, extraction of experience/skills, and a real database-backed production setup.
