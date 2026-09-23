@@ -41,8 +41,6 @@ curl -X POST http://localhost:8080/api/cvs/upload \
   -F "file=@/path/to/resume.pdf"
 ```
 
-This upload endpoint supports readable text-based CV formats, including PDF and DOCX files through Apache Tika.
-
 List all CV records:
 
 ```bash
@@ -61,6 +59,27 @@ Analyze a CV for skill match:
 curl http://localhost:8080/api/cvs/1/analysis
 ```
 
+Extract a structured CV profile:
+
+```bash
+curl http://localhost:8080/api/cvs/1/profile
+```
+
+Example profile response:
+
+```json
+{
+  "cvId": 1,
+  "fullName": "John Smith",
+  "email": "john.smith@example.com",
+  "phone": "+1 555 123 4567",
+  "skills": ["java", "spring boot", "rest", "sql", "docker"],
+  "experienceYears": 6,
+  "education": "bachelor",
+  "summary": "John Smith has 6 years of experience and skills in java, spring boot, rest, sql, docker. Education: bachelor."
+}
+```
+
 Other endpoints:
 
 - `POST /api/cvs` — create CV from JSON body
@@ -68,6 +87,7 @@ Other endpoints:
 - `GET /api/cvs` — list CV documents
 - `GET /api/cvs/{id}` — get one CV document
 - `GET /api/cvs/{id}/analysis` — score skills found in the CV
+- `GET /api/cvs/{id}/profile` — extract a structured candidate profile from the CV
 - `DELETE /api/cvs/{id}` — delete one CV document
 
-This version adds real text extraction for uploaded CV files, which is the key next step toward a practical CV evaluation backend. The remaining improvements are richer CV parsing, better skill extraction, structured candidate profiles, and production database configuration.
+This version adds a structured candidate profile extraction layer so the backend can identify candidates, emails, phone numbers, skill sets, education, and years of experience more realistically. The next major step is to move into job-description matching and recruiter-facing ranking.
