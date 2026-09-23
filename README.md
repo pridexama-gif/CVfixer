@@ -1,27 +1,25 @@
 # CVfixer
 
-CVfixer is a Spring Boot backend for CV analysis and recruitment matching. The application stores CV documents, extracts text from uploaded files, analyzes skill coverage, extracts structured candidate profile information, and matches a candidate CV against a job description.
+CVfixer is a Spring Boot backend for analyzing CVs and matching candidates to job requirements. The project stores CV documents, extracts text from uploaded files, analyzes technical skill fit, extracts structured candidate profile details, and matches candidate profiles against job descriptions.
 
-## Technology stack
+This repository is currently an MVP/backend prototype for a CV screening and recruitment-support workflow. It is a solid foundation for continued development, but it is not yet a full production-ready hiring platform.
+
+## Tech stack
 
 - Java 17
 - Spring Boot 3.2.5
 - Maven
 - Spring Data JPA / Hibernate
-- Jakarta Bean Validation
-- Apache Tika for PDF/DOCX/TXT text extraction
-- H2 for local development
+- Jakarta Validation
+- Apache Tika for document text extraction
+- H2 database for local development
 
-## Project status
-
-This project is currently a functional MVP/backend prototype for a CV analysis and hiring-fit workflow. It is not yet a production-ready recruitment platform, but it provides a solid starting point for further development.
-
-## Features
+## Current capabilities
 
 - Store CV documents in a database
-- Upload CV files and extract text automatically
-- Analyze CV content for technical skill match scores
-- Extract structured candidate profile fields such as:
+- Upload CV files and extract readable text automatically
+- Detect skills from CV content using keyword-based matching
+- Extract candidate information such as:
   - full name
   - email
   - phone number
@@ -30,29 +28,62 @@ This project is currently a functional MVP/backend prototype for a CV analysis a
   - education
   - summary
 - Create job descriptions
-- Match a candidate CV against a job posting and return a score, matched skills, and missing skills
+- Match a candidate CV to a job description and produce a score
+- Return matched skills and missing skills for a role
 
-## Run locally
+## Project status
 
-```bash
-./mvnw spring-boot:run
-```
+This project is best described as a working MVP prototype rather than a complete production-ready application.
 
-If the Maven wrapper is not present, use:
+It is suitable for:
+- learning backend architecture
+- building a portfolio project
+- demonstrating Spring Boot, REST APIs, JPA, and file processing
+- expanding into a real recruitment matching product
+
+It is not yet suitable for:
+- production hiring workflows
+- secure multi-user recruitment systems
+- enterprise-grade deployment without further work
+
+## Architecture overview
+
+The project follows a standard layered Spring Boot structure:
+
+- controllers for REST endpoints
+- services for business logic
+- repositories for persistence
+- domain entities for CVs, candidate profiles, and job descriptions
+- utility text extraction for uploaded CV files
+
+## Getting started
+
+### Prerequisites
+
+- Java 17+
+- Maven 3.8+
+
+### Run locally
 
 ```bash
 mvn spring-boot:run
 ```
 
-The application runs on:
+Or, if Maven wrapper is available:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Application URL:
 
 ```text
 http://localhost:8080
 ```
 
-## API
+## API overview
 
-### Create a CV from JSON
+### 1. Create a CV document from JSON
 
 ```bash
 curl -X POST http://localhost:8080/api/cvs \
@@ -60,38 +91,38 @@ curl -X POST http://localhost:8080/api/cvs \
   -d '{"fileName":"resume.txt","content":"Java developer with Spring Boot experience"}'
 ```
 
-### Upload a CV file
+### 2. Upload a CV file
 
 ```bash
 curl -X POST http://localhost:8080/api/cvs/upload \
   -F "file=@/path/to/resume.pdf"
 ```
 
-### List CVs
+### 3. List CVs
 
 ```bash
 curl http://localhost:8080/api/cvs
 ```
 
-### Get a CV by ID
+### 4. Get one CV by ID
 
 ```bash
 curl http://localhost:8080/api/cvs/1
 ```
 
-### Analyze a CV
+### 5. Analyze a CV for skill match
 
 ```bash
 curl http://localhost:8080/api/cvs/1/analysis
 ```
 
-### Extract a structured candidate profile
+### 6. Extract a structured candidate profile
 
 ```bash
 curl http://localhost:8080/api/cvs/1/profile
 ```
 
-### Create a job description
+### 7. Create a job description
 
 ```bash
 curl -X POST http://localhost:8080/api/jobs \
@@ -99,13 +130,13 @@ curl -X POST http://localhost:8080/api/jobs \
   -d '{"title":"Java Backend Developer","description":"We need a Java engineer with Spring Boot, REST APIs, SQL, Docker and Git experience.","requiredSkills":"java, spring boot, rest, sql, docker, git","minExperienceYears":3}'
 ```
 
-### Match a candidate CV against a job description
+### 8. Match a candidate against a job
 
 ```bash
 curl http://localhost:8080/api/jobs/1/match/1
 ```
 
-Example response:
+## Example match response
 
 ```json
 {
@@ -122,30 +153,38 @@ Example response:
 }
 ```
 
-## Endpoints summary
+## Main endpoints
 
-- `POST /api/cvs` — create CV from JSON body
+- `POST /api/cvs` — create a CV from JSON
 - `POST /api/cvs/upload` — upload a CV file and store extracted text
-- `GET /api/cvs` — list all CV documents
-- `GET /api/cvs/{id}` — get one CV document
-- `GET /api/cvs/{id}/analysis` — score CV skill fit
-- `GET /api/cvs/{id}/profile` — extract structured candidate profile data
+- `GET /api/cvs` — list all CVs
+- `GET /api/cvs/{id}` — get one CV
+- `GET /api/cvs/{id}/analysis` — analyze skill coverage
+- `GET /api/cvs/{id}/profile` — extract structured candidate profile
 - `POST /api/jobs` — create a job description
-- `GET /api/jobs/{jobId}/match/{cvId}` — compare a CV against a job posting
-- `DELETE /api/cvs/{id}` — delete a CV document
+- `GET /api/jobs/{jobId}/match/{cvId}` — compare a CV against a job
+- `DELETE /api/cvs/{id}` — delete a CV record
 
-## Roadmap
+## What is still needed to make it production-ready
 
-Planned next improvements:
+The next improvement phases would include:
 
-- stronger CV parsing with better field extraction
-- more intelligent job-to-candidate scoring
-- ranked shortlist generation
-- Postgres/MySQL production database setup
-- authentication and user management
-- deployment and CI/CD pipeline
-- dashboard for recruiters and administrators
+- PostgreSQL/MySQL production database setup
+- authentication and authorization
+- improved extraction and normalization of CV fields
+- smarter weighted candidate scoring
+- candidate shortlists and saved match results
+- Docker and CI/CD setup
+- API documentation with Swagger/OpenAPI
+- recruiter/admin dashboard
+- better security and environment configuration
+
+## Summary
+
+CVfixer is a practical backend MVP for a recruitment and CV-screening tool. It demonstrates core backend capabilities in a realistic domain and acts as a strong starting point for future product development.
+
+This project is already a useful portfolio or demo project, but it is intentionally positioned as a prototype rather than a complete production system.
 
 ## License
 
-This project is currently a personal development project and is not yet published with a formal license.
+This project currently does not include a formal public license. It is intended for personal development and learning use unless otherwise specified.
